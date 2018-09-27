@@ -5,6 +5,15 @@
 #' @param data1 data for group 1
 #' @param data2 data for group 2
 #' @return aggregate and detailed decomposition components
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' eu=five[,7:12]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' colnames(eu)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' res=obd(formula,ref="g1",data1=na,data2=eu)
 #' @export
 #'
 #'
@@ -87,6 +96,15 @@ ind=function(y,y0){
 #' @param data data
 #' @param link link function: logit or probit
 #' @return a list of models for y0
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' y=na$SMALL.LoBM
+#' y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+#' model=dr(formula,y0=y0,data=na,link="logit")
 #' @export
 #'
 #'
@@ -114,6 +132,17 @@ dr=function(formula,y0,data,link="logit"){
 #' @param data2 data for group 2
 #' @param link link function: logit or probit
 #' @return a series of (counterfactual) distributions
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' eu=five[,7:12]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' colnames(eu)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' y=na$SMALL.LoBM
+#' y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+#' cfs=cfs_dr(formula,y0,ref="g1",data1=na,data2=eu,link="logit")
 #' @export
 #'
 #'
@@ -236,6 +265,19 @@ cfs_dr=function(formula,y0,ref="g1",data1,data2,link="logit"){
 #' @param y0 a grid of threshold values
 #' @param qs quantiles to compute
 #' @return a series of quantiles corresponding to each (counterfactual) distribution
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' eu=five[,7:12]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' colnames(eu)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' y=na$SMALL.LoBM
+#' y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+#' cfs=cfs_dr(formula,y0,ref="g1",data1=na,data2=eu,link="logit")
+#' qs=seq(0.1,0.9,length.out = 10)
+#' qsres=qs_dr(object=cfs,y0=y0,qs=qs)
 #' @export
 #'
 
@@ -276,13 +318,66 @@ dec_dr=function(object){
 #' @inheritParams dr
 #' @inheritParams qs_dr
 #' @return decomposition components of the quantile differences
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' eu=five[,7:12]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' colnames(eu)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' y=na$SMALL.LoBM
+#' y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+#' qs=seq(0.1,0.9,length.out = 10)
+#' deres=de_dr(formula,y0,ref="g1",data1=na,data2=eu,link="logit",qs=qs)
+#'
 #' @export
 #'
 de_dr=function(formula,y0,ref="g1",data1,data2,link="logit",qs) {
   cfsr_dr=cfs_dr(formula,y0,ref=ref,data1,data2,link=link)
   qsr_dr=qs_dr(object=cfsr_dr,y0,qs)
   dr=dec_dr(object=qsr_dr)
-  dr
+  formula=as.formula(formula)
+  dat1=model.frame(terms(formula,data=data1),data=data1)
+  Overall=rowSums(dr)
+  Agg_c=rowSums(dr[,1:(ncol(dat1)-1)])
+  Agg_s=Overall-Agg_c
+  drs=cbind(Overall,Agg_c,Agg_s,dr)
+  colnames(drs)=c("Overall","Agg_c","Agg_s",colnames(dr))
+  drs
 }
+
+#' @title sd_dr
+#' @description compute standard deviation for components
+#' @inheritParams de_dr
+#' @param B the number of bootstrap iterations
+#' @return standard deviations for decomposition components
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' eu=five[,7:12]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' colnames(eu)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' y=na$SMALL.LoBM
+#' y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+#' qs=seq(0.1,0.9,length.out = 10)
+#' B=10
+#' sd_dr(formula,y0,ref="g1",data1=na,data2=eu,link="logit",qs,B)
+#' @export
+#'
+#'
+
+sd_dr=function(formula,y0,ref="g1",data1,data2,link="logit",qs,B){
+  drr=pbapply::pblapply(1:B, function(i) {
+    data1=data1[sample(nrow(data1),replace = T),]
+    data2=data2[sample(nrow(data2),replace = T),]
+    de_dr(formula,y0,ref="g1",data1,data2,link="logit",qs)
+  })
+  sd=apply(simplify2array(drr), 1:2, sd)
+  sd
+}
+
 
 

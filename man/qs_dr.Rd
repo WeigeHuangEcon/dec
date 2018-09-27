@@ -19,3 +19,17 @@ a series of quantiles corresponding to each (counterfactual) distribution
 \description{
 inverse the distribution function to obtain quantiles
 }
+\examples{
+data(five)
+na=five[,1:6]
+eu=five[,7:12]
+colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+colnames(na)=colnames
+colnames(eu)=colnames
+formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+y=na$SMALL.LoBM
+y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+cfs=cfs_dr(formula,y0,ref="g1",data1=na,data2=eu,link="logit")
+qs=seq(0.1,0.9,length.out = 10)
+qsres=qs_dr(object=cfs,y0=y0,qs=qs)
+}

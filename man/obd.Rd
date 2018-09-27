@@ -21,3 +21,13 @@ aggregate and detailed decomposition components
 \description{
 do Oaxaca-Blinder decomposition
 }
+\examples{
+data(five)
+na=five[,1:6]
+eu=five[,7:12]
+colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+colnames(na)=colnames
+colnames(eu)=colnames
+formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+res=obd(formula,ref="g1",data1=na,data2=eu)
+}

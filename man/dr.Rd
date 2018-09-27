@@ -21,3 +21,13 @@ a list of models for y0
 \description{
 distribution regression
 }
+\examples{
+data(five)
+na=five[,1:6]
+colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+colnames(na)=colnames
+formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+y=na$SMALL.LoBM
+y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
+model=dr(formula,y0=y0,data=na,link="logit")
+}
