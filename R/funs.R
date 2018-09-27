@@ -392,7 +392,7 @@ de_dr=function(formula,y0,ref="g1",data1,data2,link="logit",qs) {
 #' y=na$SMALL.LoBM
 #' y0=seq(quantile(y,probs = 0.05),quantile(y,probs = 0.95),length=100)
 #' qs=seq(0.1,0.9,length.out = 10)
-#' B=10
+#' B=3
 #' sd_dr(formula,y0,ref="g1",data1=na,data2=eu,link="logit",qs,B)
 #' @export
 #'
@@ -408,5 +408,32 @@ sd_dr=function(formula,y0,ref="g1",data1,data2,link="logit",qs,B){
   sd
 }
 
+#' @title de_dr.plot
+#' @description plot the reselts from de_dr
+#' @param object decomposition components from de_dr
+#' @param qs quantiles to compute
+#' @param kind kinds of decomposition.It could be "agg", "composition", "structure".
+#' @export
+de_dr.plot=function(object,kind="agg",qs){
+  if(kind=="agg"){
+    matplot(qs,object[,1:3],type = "l",lwd = 3,xlab = "Quantile",ylab = "Effects")
+    legend("topleft",c("Overall","Composition","Structure"),col = 1:3,lty = 1:3,lwd=3,cex = 0.5)
+  }
+  if(kind=="composition"){
+    n=(ncol(object)-2)/2 +2
+    cc=colnames(object)[4:n]
+    dd=object[,c(2,4:n)]
+    matplot(qs,dd,type = "l",lwd = 3,xlab = "Quantile",ylab = "Effects")
+    legend("topleft",c("Agg_c",cc),col = 1:length(dd),lty = 1:length(dd),lwd=3,cex = 0.5)
+  }
+  if(kind=="structure"){
+    n=(ncol(object)-2)/2 +2
+    cc=colnames(object)[-(1:n)]
+    ccc=c("Agg_s",cc)
+    dd=cbind(object[,3],object[,-(1:n)])
+    matplot(qs,dd,type = "l",lwd = 3,xlab = "Quantile",ylab = "Effects")
+    legend("topleft",ccc,col = 1:length(dd),lty = 1:length(dd),lwd=3,cex = 0.5)
+  }
+}
 
 

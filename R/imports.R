@@ -1,4 +1,4 @@
-#utils::globalVariables(c("y","data"))
+utils::globalVariables(c("matplot","legend"))
 #' dec: A package for decomposition
 #'
 #' @docType package

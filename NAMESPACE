@@ -2,6 +2,7 @@
 
 export(cfs_dr)
 export(de_dr)
+export(de_dr.plot)
 export(dec_dr)
 export(dr)
 export(ind)
