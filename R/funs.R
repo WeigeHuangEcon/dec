@@ -314,11 +314,15 @@ qs_dr=function(object,y0,qs){
   f2q=function(fs,y0,qs){
     qss=rep(0,length(qs))
     for (i in 1:length(qs)) {
-      qss[i]= y0[which(sort(fs) >= qs[i])[1]]
+      fs=fs[!is.na(fs)] # remove NA in a vector
+      if(max(fs) >= qs[i]){
+        qss[i]= y0[which(sort(fs) >= qs[i])[1]]
+      }
+      else {qss[i]=max(y0)}
     }
     qss
   }
-  qs_dr=pbapply::pbsapply(1:ncol(object),function(i) f2q(object[,i],y0,qs=qs))
+  qs_dr=pbapply::pbsapply(1:ncol(object),function(i) f2q(fs=object[,i],y0,qs=qs))
   colnames(qs_dr)=colnames(object)
   qs_dr
 }
@@ -416,23 +420,23 @@ sd_dr=function(formula,y0,ref="g1",data1,data2,link="logit",qs,B){
 #' @export
 de_dr.plot=function(object,kind="agg",qs){
   if(kind=="agg"){
-    matplot(qs,object[,1:3],type = "l",lwd = 3,xlab = "Quantile",ylab = "Effects")
+    matplot(qs,object[,1:3],lwd = 3,xlab = "Quantile",ylab = "Effects",col = 1:3,lty = 1:3,type = "l")
     legend("topleft",c("Overall","Composition","Structure"),col = 1:3,lty = 1:3,lwd=3,cex = 0.5)
   }
   if(kind=="composition"){
     n=(ncol(object)-2)/2 +2
     cc=colnames(object)[4:n]
     dd=object[,c(2,4:n)]
-    matplot(qs,dd,type = "l",lwd = 3,xlab = "Quantile",ylab = "Effects")
-    legend("topleft",c("Agg_c",cc),col = 1:length(dd),lty = 1:length(dd),lwd=3,cex = 0.5)
+    matplot(qs,dd,lwd = 3,xlab = "Quantile",ylab = "Effects",col = 1:ncol(dd),lty = 1:ncol(dd),type = "l")
+    legend("topleft",c("Agg_c",cc),col = 1:ncol(dd),lty = 1:ncol(dd),lwd=3,cex = 0.5)
   }
   if(kind=="structure"){
     n=(ncol(object)-2)/2 +2
     cc=colnames(object)[-(1:n)]
     ccc=c("Agg_s",cc)
     dd=cbind(object[,3],object[,-(1:n)])
-    matplot(qs,dd,type = "l",lwd = 3,xlab = "Quantile",ylab = "Effects")
-    legend("topleft",ccc,col = 1:length(dd),lty = 1:length(dd),lwd=3,cex = 0.5)
+    matplot(qs,dd,lwd = 3,xlab = "Quantile",ylab = "Effects",col = 1:length(ccc),lty = 1:length(ccc),type = "l")
+    legend("topleft",ccc,col = 1:length(ccc),lty = 1:length(ccc),lwd=3,cex = 0.5)
   }
 }
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • dec</title>
+<title>sd_obd — sd_obd • dec</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="sd_obd — sd_obd" />
+
+<meta property="og:description" content="compute standard deviation of Oaxaca-Blinder decomposition" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -87,102 +90,72 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>sd_obd</h1>
+    
+    <div class="hidden name"><code>sd_obd.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>compute standard deviation of Oaxaca-Blinder decomposition</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="cfs_dr.html">cfs_dr()</a></code> </p>
-        </td>
-        <td><p>cfs_dr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="de_dr.html">de_dr()</a></code> </p>
-        </td>
-        <td><p>de_dr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="de_dr.plot.html">de_dr.plot()</a></code> </p>
-        </td>
-        <td><p>de_dr.plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dec.html">dec</a></code> </p>
-        </td>
-        <td><p>dec: A package for decomposition</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dr.html">dr()</a></code> </p>
-        </td>
-        <td><p>dr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="five.html">five</a></code> </p>
-        </td>
-        <td><p>Asset pricing data from Kenneth R. French's website</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ind.html">ind()</a></code> </p>
-        </td>
-        <td><p>ind</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="obd.html">obd()</a></code> </p>
-        </td>
-        <td><p>obd</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="qs_dr.html">qs_dr()</a></code> </p>
-        </td>
-        <td><p>qs_dr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sd_dr.html">sd_dr()</a></code> </p>
-        </td>
-        <td><p>sd_dr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sd_obd.html">sd_obd()</a></code> </p>
-        </td>
-        <td><p>sd_obd</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>sd_obd</span>(<span class='no'>formula</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"g1"</span>, <span class='no'>data1</span>, <span class='no'>data2</span>, <span class='no'>B</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>formula</th>
+      <td><p>a formula: y ~ x1+x2</p></td>
+    </tr>
+    <tr>
+      <th>ref</th>
+      <td><p>reference group. ref=g1 or g2.</p></td>
+    </tr>
+    <tr>
+      <th>data1</th>
+      <td><p>data for group 1</p></td>
+    </tr>
+    <tr>
+      <th>data2</th>
+      <td><p>data for group 2</p></td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td><p>the number of bootstrap iterations</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>standard deviations of aggregate and detailed decomposition components</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>five</span>)
+<span class='no'>na</span><span class='kw'>=</span><span class='no'>five</span>[,<span class='fl'>1</span>:<span class='fl'>6</span>]
+<span class='no'>eu</span><span class='kw'>=</span><span class='no'>five</span>[,<span class='fl'>7</span>:<span class='fl'>12</span>]
+<span class='no'>colnames</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"Mkt.RF"</span>,<span class='st'>"SMB"</span>,<span class='st'>"HML"</span>,<span class='st'>"RMW"</span>, <span class='st'>"CMA"</span>,<span class='st'>"SMALL.LoBM"</span>)
+<span class='fu'>colnames</span>(<span class='no'>na</span>)<span class='kw'>=</span><span class='no'>colnames</span>
+<span class='fu'>colnames</span>(<span class='no'>eu</span>)<span class='kw'>=</span><span class='no'>colnames</span>
+<span class='no'>formula</span><span class='kw'>=</span><span class='no'>SMALL.LoBM</span>~<span class='no'>Mkt.RF</span>+<span class='no'>SMB</span>+<span class='no'>HML</span>+<span class='no'>RMW</span>+<span class='no'>CMA</span>
+<span class='no'>B</span><span class='kw'>=</span><span class='fl'>10</span>
+<span class='no'>sd</span><span class='kw'>=</span><span class='fu'>sd_obd</span>(<span class='no'>formula</span>,<span class='kw'>ref</span><span class='kw'>=</span><span class='st'>"g1"</span>,<span class='kw'>data1</span><span class='kw'>=</span><span class='no'>na</span>,<span class='kw'>data2</span><span class='kw'>=</span><span class='no'>eu</span>,<span class='kw'>B</span><span class='kw'>=</span><span class='no'>B</span>)</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 
