@@ -9,12 +9,12 @@ qs_dr(object, y0, qs)
 \arguments{
 \item{object}{results from cfs_dr}
 
-\item{y0}{a grid of values}
+\item{y0}{a grid of threshold values}
 
 \item{qs}{quantiles to compute}
 }
 \value{
-a series of quantiles
+a series of quantiles corresponding to each (counterfactual) distribution
 }
 \description{
 inverse the distribution function to obtain quantiles

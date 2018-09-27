@@ -9,14 +9,14 @@ dr(formula, y0, data, link = "logit")
 \arguments{
 \item{formula}{a formula: y ~ x1+x2}
 
-\item{y0}{a grid of values}
+\item{y0}{a grid of threshold values}
 
 \item{data}{data}
 
-\item{link}{link function}
+\item{link}{link function: logit or probit}
 }
 \value{
-a list of results
+a list of models for y0
 }
 \description{
 distribution regression

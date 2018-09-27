@@ -1,10 +1,10 @@
 #' @title obd
-#' @description Oaxaca-Blinder decomposition
+#' @description do Oaxaca-Blinder decomposition
 #' @param formula a formula: y ~ x1+x2
 #' @param ref reference group. ref=g1 or g2.
 #' @param data1 data for group 1
 #' @param data2 data for group 2
-#' @return aggregate and detailed decomposition components 
+#' @return aggregate and detailed decomposition components
 #' @export
 #'
 #'
@@ -20,7 +20,7 @@ obd=function(formula,ref="g1",data1,data2){
   factors=names(model1$coefficients)
   datt1=dat1[,c(factors[-1])]
   datt2=dat2[,c(factors[-1])]
-  
+
   if(ref=="g1") {
     dc=rep(0,length(factors))
     for (i in 2:length(factors)) {
@@ -32,7 +32,7 @@ obd=function(formula,ref="g1",data1,data2){
     for (i in 2:length(factors)) {
       ds[i]=colMeans(datt2)[i-1]*(coef1[i]-coef2[i])
     }
-   c=sum(dc) 
+   c=sum(dc)
    s=sum(ds)
    d=c+s
    dr=c(d,c,s,dc,ds)
@@ -52,14 +52,14 @@ obd=function(formula,ref="g1",data1,data2){
     for (i in 2:length(factors)) {
       ds[i]=colMeans(datt1)[i-1]*(coef1[i]-coef2[i])
     }
-    c=sum(dc) 
+    c=sum(dc)
     s=sum(ds)
     d=c+s
     dr=c(d,c,s,dc,ds)
     cnames=paste0(factors[-1],sep="_c")
     snames=paste0(c("Constant",factors[-1]),sep = "_s")
     names(dr)=c("Overall","Agg_c","Agg_s",cnames,snames)
-    dr 
+    dr
   }
   dr
 }
@@ -67,7 +67,7 @@ obd=function(formula,ref="g1",data1,data2){
 #' @title ind
 #' @description create indicator matrix
 #' @param y outcome variable
-#' @param y0 a grid of values
+#' @param y0 a grid of threshold values
 #' @return indicator matrix
 #' @export
 #'
@@ -83,10 +83,10 @@ ind=function(y,y0){
 #' @title dr
 #' @description distribution regression
 #' @param formula a formula: y ~ x1+x2
-#' @param y0 a grid of values
+#' @param y0 a grid of threshold values
 #' @param data data
-#' @param link link function
-#' @return a list of results
+#' @param link link function: logit or probit
+#' @return a list of models for y0
 #' @export
 #'
 #'
@@ -95,7 +95,7 @@ dr=function(formula,y0,data,link="logit"){
   dat=model.frame(terms(formula,data=data),data=data)
   y=dat[,1]
   indicatormatrix=ind(y,y0)
-  model=list(list())  
+  model=list(list())
   for(i in 1:length(y0)){
     ff=paste(colnames(dat)[-1],collapse = "+")
     formulaa=as.formula(paste("indicatormatrix[,i]~",ff))
@@ -106,14 +106,14 @@ dr=function(formula,y0,data,link="logit"){
 
 
 #' @title cfs_dr
-#' @description distribution regression
+#' @description compute (counterfactual) distributions using distribution regression
 #' @param formula a formula: y ~ x1+x2
-#' @param y0 a grid of values
+#' @param y0 a grid of threshold values
 #' @param ref reference group. ref=g1 or g2.
 #' @param data1 data for group 1
 #' @param data2 data for group 2
 #' @param link link function: logit or probit
-#' @return a list of results
+#' @return a series of (counterfactual) distributions
 #' @export
 #'
 #'
@@ -170,10 +170,10 @@ cfs_dr=function(formula,y0,ref="g1",data1,data2,link="logit"){
         }
         fs[i,]=c(f_x12,f_coe12)
       }
-     fs 
+     fs
     }
   }
-  
+
   if(ref=="g2"){
     if(link=="logit"){
       logitF=function(x){
@@ -219,7 +219,7 @@ cfs_dr=function(formula,y0,ref="g1",data1,data2,link="logit"){
         }
         fs[i,]=c(f_x12,f_coe12)
       }
-      fs 
+      fs
     }
   }
   cnames=paste0(colnames(dat1)[-1],sep="_c")
@@ -233,11 +233,11 @@ cfs_dr=function(formula,y0,ref="g1",data1,data2,link="logit"){
 #' @title qs_dr
 #' @description inverse the distribution function to obtain quantiles
 #' @param object results from cfs_dr
-#' @param y0 a grid of values
+#' @param y0 a grid of threshold values
 #' @param qs quantiles to compute
-#' @return a series of quantiles
+#' @return a series of quantiles corresponding to each (counterfactual) distribution
 #' @export
-#' 
+#'
 
 qs_dr=function(object,y0,qs){
   f2q=function(fs,y0,qs){
@@ -256,9 +256,10 @@ qs_dr=function(object,y0,qs){
 #' @title dec_dr
 #' @description decompose quantile differences
 #' @param object results from qs_dr
-#' @return decomposition components
+#' @return decomposition components of the quantile differences
+#' @keywords internal
 #' @export
-#' 
+#'
 
 dec_dr=function(object){
   d=matrix(0,nrow = nrow(object),ncol = ncol(object)-1)
@@ -269,14 +270,14 @@ dec_dr=function(object){
   d
 }
 
-#' @title dec_dr
-#' @description decompose quantile differences
+#' @title de_dr
+#' @description decompose quantile differences using distribution regression
 #' @inheritParams cfs_dr
 #' @inheritParams dr
 #' @inheritParams qs_dr
-#' @return decomposition components
+#' @return decomposition components of the quantile differences
 #' @export
-#' 
+#'
 de_dr=function(formula,y0,ref="g1",data1,data2,link="logit",qs) {
   cfsr_dr=cfs_dr(formula,y0,ref=ref,data1,data2,link=link)
   qsr_dr=qs_dr(object=cfsr_dr,y0,qs)

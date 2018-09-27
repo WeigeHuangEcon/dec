@@ -9,7 +9,7 @@ ind(y, y0)
 \arguments{
 \item{y}{outcome variable}
 
-\item{y0}{a grid of values}
+\item{y0}{a grid of threshold values}
 }
 \value{
 indicator matrix

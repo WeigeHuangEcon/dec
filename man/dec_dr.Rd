@@ -10,8 +10,9 @@ dec_dr(object)
 \item{object}{results from qs_dr}
 }
 \value{
-decomposition components
+decomposition components of the quantile differences
 }
 \description{
 decompose quantile differences
 }
+\keyword{internal}

@@ -2,14 +2,14 @@
 % Please edit documentation in R/funs.R
 \name{de_dr}
 \alias{de_dr}
-\title{dec_dr}
+\title{de_dr}
 \usage{
 de_dr(formula, y0, ref = "g1", data1, data2, link = "logit", qs)
 }
 \arguments{
 \item{formula}{a formula: y ~ x1+x2}
 
-\item{y0}{a grid of values}
+\item{y0}{a grid of threshold values}
 
 \item{ref}{reference group. ref=g1 or g2.}
 
@@ -22,8 +22,8 @@ de_dr(formula, y0, ref = "g1", data1, data2, link = "logit", qs)
 \item{qs}{quantiles to compute}
 }
 \value{
-decomposition components
+decomposition components of the quantile differences
 }
 \description{
-decompose quantile differences
+decompose quantile differences using distribution regression
 }

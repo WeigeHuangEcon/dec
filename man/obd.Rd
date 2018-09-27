@@ -19,5 +19,5 @@ obd(formula, ref = "g1", data1, data2)
 aggregate and detailed decomposition components
 }
 \description{
-Oaxaca-Blinder decomposition
+do Oaxaca-Blinder decomposition
 }

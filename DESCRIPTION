@@ -1,9 +1,10 @@
 Package: dec
 Type: Package
 Title: Decomposition
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: person("Weige", "Huang", email="darren1988@163.com",role=c("aut","cre"))
-Description: Decompose differences in distributional statistics
+Description: Decompose differences in distributional statistics.
+Imports: stats,pbapply
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

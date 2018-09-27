@@ -9,7 +9,7 @@ cfs_dr(formula, y0, ref = "g1", data1, data2, link = "logit")
 \arguments{
 \item{formula}{a formula: y ~ x1+x2}
 
-\item{y0}{a grid of values}
+\item{y0}{a grid of threshold values}
 
 \item{ref}{reference group. ref=g1 or g2.}
 
@@ -20,8 +20,8 @@ cfs_dr(formula, y0, ref = "g1", data1, data2, link = "logit")
 \item{link}{link function: logit or probit}
 }
 \value{
-a list of results
+a series of (counterfactual) distributions
 }
 \description{
-distribution regression
+compute (counterfactual) distributions using distribution regression
 }
