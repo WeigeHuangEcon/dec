@@ -73,6 +73,35 @@ obd=function(formula,ref="g1",data1,data2){
   dr
 }
 
+#' @title sd_obd
+#' @description compute standard deviation of Oaxaca-Blinder decomposition
+#' @inheritParams obd
+#' @param B the number of bootstrap iterations
+#' @return standard deviations of aggregate and detailed decomposition components
+#' @examples
+#' data(five)
+#' na=five[,1:6]
+#' eu=five[,7:12]
+#' colnames=c("Mkt.RF","SMB","HML","RMW", "CMA","SMALL.LoBM")
+#' colnames(na)=colnames
+#' colnames(eu)=colnames
+#' formula=SMALL.LoBM~Mkt.RF+SMB+HML+RMW+CMA
+#' B=10
+#' sd=sd_obd(formula,ref="g1",data1=na,data2=eu,B=B)
+#' @export
+#'
+#'
+sd_obd=function(formula,ref="g1",data1,data2,B){
+  drr=pbapply::pbsapply(1:B, function(i) {
+    data1=data1[sample(nrow(data1),replace = T),]
+    data2=data2[sample(nrow(data2),replace = T),]
+    obd(formula,ref=ref,data1,data2)
+  })
+  sd=apply(drr, 1, sd)
+  sd
+}
+
+
 #' @title ind
 #' @description create indicator matrix
 #' @param y outcome variable
